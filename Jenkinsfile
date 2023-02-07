@@ -1,9 +1,5 @@
 pipeline {
     agent any
-    environment {
-        //be sure to replace "bhavukm" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "mariocalipo/train-schedule"
-    }
     stages {
         stage('Build') {
             steps {
@@ -15,7 +11,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    app = docker.build(DOCKER_IMAGE_NAME)
+                    app = docker.build("mariocalipo/train-schedule")
                     app.inside {
                         sh 'echo Hello, World!'
                     }
