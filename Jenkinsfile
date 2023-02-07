@@ -14,7 +14,7 @@ pipeline {
             }
             steps {
                 script {
-                    app = docker.build "mariocalipo/train-schedule"
+                    app = docker.build trainschedule
                     app.inside {
                         sh 'Image Tested!'
                     }
