@@ -12,13 +12,8 @@ pipeline {
             when {
                 branch 'master'
             }
-            steps {
-                script {
-                    app = docker.build trainschedule
-                    app.inside {
-                        sh 'Image Tested!'
-                    }
-                }
+            steps {         
+                sh 'docker build -t mariocalipo/train-schedule .'
             }
         }
         stage('Push Docker Image') {
