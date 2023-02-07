@@ -1,10 +1,5 @@
 pipeline {
     agent any
-    environment {
-        //be sure to replace "sampriyadarshi" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "mariocalipo/train-schedule"
-        CANARY_REPLICAS = 0
-    }
     stages {
         stage('Build') {
             steps {
@@ -14,21 +9,17 @@ pipeline {
             }
         }
         stage('Build Docker Image') {
-            when {
-                branch 'master'
             }
             steps {
-                script {
-                    app = docker.build(DOCKER_IMAGE_NAME)
-                    app.inside {
-                        sh 'echo Hello, World!'
-                    }
-                }
+                    app = docker.build("mariocalipo/train-schedule")
             }
         }
+        stage('Test image') {
+        app.inside {
+            sh 'echo "Tests passed"'
+        }
+    }
         stage('Push Docker Image') {
-            when {
-                branch 'master'
             }
             steps {
                 script {
@@ -39,10 +30,7 @@ pipeline {
                 }
             }
         }
-        
         stage('DeployToProduction') {
-            when {
-                branch 'master'
             }
             steps {
                 milestone(1)
@@ -52,22 +40,3 @@ pipeline {
                     enableConfigSubstitution: true
                 )
             }
-        }
-    }
-    /*post {
-	always {
-            kubernetesDeploy (
-                kubeconfigId: 'kubeconfig',
-                configs: 'train-schedule-kube-canary.yml',
-                enableConfigSubstitution: true
-            )
-        }
-	*/    
-        //cleanup {
-	    
-	    /* Use slackNotifier.groovy from shared library and provide current build result as parameter */   
-        //    slackNotifier(currentBuild.currentResult)
-            // cleanWs()
-        //}
-   // }
-}
