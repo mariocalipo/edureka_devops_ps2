@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        DOCKER_IMAGE_NAME = "mariocalipo/train-schedule"
+    }
     stages {
         stage('Build') {
             steps {
@@ -12,8 +15,13 @@ pipeline {
             when {
                 branch 'master'
             }
-            steps {         
-                sh 'docker build -t mariocalipo/train-schedule .'
+            steps {
+                script {
+                    app = docker.build(DOCKER_IMAGE_NAME)
+                    app.inside {
+                        sh 'echo Hello, World!'
+                    }
+                }
             }
         }
         stage('Push Docker Image') {
