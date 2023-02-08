@@ -42,6 +42,7 @@ pipeline {
             }
             steps {
                 input 'Deploy to Production?'
+                sh "kubectl config view"
                 sh "kubectl apply -f train-schedule-kube.yml"
             }
         }
