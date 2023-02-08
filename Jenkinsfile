@@ -44,7 +44,7 @@ pipeline {
                 CANARY_REPLICAS = 1
             }
             steps {
-                sh 'kubectl apply -f train-schedule-kube-canary.yml --context minikube'
+                sh 'kubectl apply -f train-schedule-kube-canary.yml --kubeconfig=~/.kube/config'
             }
         }
         stage('DeployToProduction') {
@@ -56,8 +56,8 @@ pipeline {
             }
             steps {
                 input 'Deploy to Production?'
-                sh 'kubectl apply -f train-schedule-kube-canary.yml --context minikube'
-                sh 'kubectl apply -f train-schedule-kube.yml --context minikube'
+                sh 'kubectl apply -f train-schedule-kube-canary.yml --kubeconfig=~/.kube/config'
+                sh 'kubectl apply -f train-schedule-kube.yml --kubeconfig=~/.kube/config'
             }
         }
     }
