@@ -44,10 +44,7 @@ pipeline {
                 CANARY_REPLICAS = 1
             }
             steps {
-                sh 'kubectl config set-cluster minikube --server=https://192.168.49.2:8443 --insecure-skip-tls-verify=true'
-                sh 'kubectl config set-context minikube --cluster=minikube --user=jenkins-admin'
-                sh 'kubectl config use-context minikube'
-                sh 'kubectl apply -f train-schedule-kube-canary.yml'
+                sh 'kubectl apply -f train-schedule-kube-canary.yml --context minikube'
             }
         }
         stage('DeployToProduction') {
@@ -59,8 +56,8 @@ pipeline {
             }
             steps {
                 input 'Deploy to Production?'
-                sh 'kubectl apply -f train-schedule-kube-canary.yml'
-                sh 'kubectl apply -f train-schedule-kube.yml'
+                sh 'kubectl apply -f train-schedule-kube-canary.yml --context minikube'
+                sh 'kubectl apply -f train-schedule-kube.yml --context minikube'
             }
         }
     }
