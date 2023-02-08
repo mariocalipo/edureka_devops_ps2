@@ -44,7 +44,7 @@ pipeline {
                 CANARY_REPLICAS = 1
             }
             steps {
-                sh 'kubectl apply -f train-schedule-kube-canary.yml --kubeconfig=~/.kube/config'
+                sh 'kubectl get nodes'
             }
         }
         stage('DeployToProduction') {
