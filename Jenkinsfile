@@ -36,5 +36,29 @@ pipeline {
                 }
             }
         }
+        stage('CanaryDeploy') {
+            when {
+                branch 'master'
+            }
+            environment { 
+                CANARY_REPLICAS = 1
+            }
+            steps {
+                sh 'kubectl apply -f train-schedule-kube-canary.yml'
+            }
+        }
+        stage('DeployToProduction') {
+            when {
+                branch 'master'
+            }
+            environment { 
+                CANARY_REPLICAS = 0
+            }
+            steps {
+                input 'Deploy to Production?'
+                sh 'kubectl apply -f train-schedule-kube-canary.yml'
+                sh 'kubectl apply -f train-schedule-kube.yml'
+            }
+        }
     }
 }
