@@ -42,7 +42,7 @@ pipeline {
             }
             steps {
                 input 'Deploy to Production?'
-                sh "kubectl config view"
+                sh "kubectl config set-credentials cluster-admin --username=jenkins-admin --password=xxkhj014"
                 sh "kubectl apply -f train-schedule-kube.yml"
             }
         }
