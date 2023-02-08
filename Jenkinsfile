@@ -44,9 +44,9 @@ pipeline {
                 CANARY_REPLICAS = 1
             }
             steps {
-                kubectl config set-cluster minikube --server=https://192.168.49.2:8443 --insecure-skip-tls-verify=true
-                kubectl config set-context minikube --cluster=minikube --user=jenkins-admin
-                kubectl config use-context minikube 
+                sh 'kubectl config set-cluster minikube --server=https://192.168.49.2:8443 --insecure-skip-tls-verify=true'
+                sh 'kubectl config set-context minikube --cluster=minikube --user=jenkins-admin'
+                sh 'kubectl config use-context minikube'
                 sh 'kubectl apply -f train-schedule-kube-canary.yml'
             }
         }
